@@ -1,0 +1,12 @@
+const $=(s,c=document)=>c.querySelector(s),$$=(s,c=document)=>[...c.querySelectorAll(s)];
+$('#year').textContent=new Date().getFullYear();
+const toggle=$('.menu-toggle'),nav=$('.nav');
+toggle?.addEventListener('click',()=>nav.classList.toggle('open'));
+$$('.nav a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.12});
+$$('.reveal').forEach(el=>io.observe(el));
+$$('[data-count]').forEach(el=>{const target=+el.dataset.count;let done=false;const o=new IntersectionObserver(es=>{if(es[0].isIntersecting&&!done){done=true;let start=0;const step=()=>{start+=Math.ceil(target/40);el.textContent=Math.min(start,target);if(start<target)requestAnimationFrame(step)};step();o.disconnect()}});o.observe(el)});
+const glow=$('.cursor-glow');window.addEventListener('pointermove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'});
+$$('.tilt-card').forEach(card=>{card.addEventListener('pointermove',e=>{if(innerWidth<901)return;const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`perspective(1000px) rotateX(${-y*5}deg) rotateY(${x*7}deg) translateZ(4px)`});card.addEventListener('pointerleave',()=>card.style.transform='')});
+$$('.magnetic').forEach(btn=>{btn.addEventListener('pointermove',e=>{const r=btn.getBoundingClientRect();btn.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.12}px,${(e.clientY-r.top-r.height/2)*.12}px)`});btn.addEventListener('pointerleave',()=>btn.style.transform='')});
+const form=$('#contactForm');form?.addEventListener('submit',e=>{e.preventDefault();const name=$('#name').value,email=$('#email').value,msg=$('#message').value;const subject=encodeURIComponent(`STILES ROX — Message from ${name}`);const body=encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${msg}`);window.location.href=`mailto:0721912263ms@gmail.com?subject=${subject}&body=${body}`});
